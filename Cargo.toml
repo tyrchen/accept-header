@@ -1,0 +1,19 @@
+[package]
+name = "accept-header"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+documentation = "https://docs.rs/accept-header"
+repository = "https://github.com/tyrchen/accept-header"
+homepage = "https://github.com/tyrchen/accept-header"
+description = """
+A simple library for parsing HTTP Accept headers for content negotiation.
+"""
+readme = "README.md"
+categories = ["web programming"]
+keywords = ["http", "header", "content-negotiation"]
+
+[dependencies]
+http = "0.2.8"
+mime = "0.3.16"
+snafu = { version = "0.7.3", features = ["rust_1_61"] }
