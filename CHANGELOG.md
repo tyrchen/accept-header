@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.1] - 2022-11-14
+
+[b578abd](b578abdee31d425667319b1af0358c16fa8fbde7)...[7fa4d3c](7fa4d3cc7eacd592057a1a4ff1ef13542f3c9cc7)
+
+### Features
+
+- Support From<Mime> for Accept type ([7fa4d3c](7fa4d3cc7eacd592057a1a4ff1ef13542f3c9cc7) - 2022-11-14 by Tyr Chen)
+
 ## [0.1.0] - 2022-11-14
 
 ### Features
