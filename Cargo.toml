@@ -10,7 +10,7 @@ description = """
 A simple library for parsing HTTP Accept headers for content negotiation.
 """
 readme = "README.md"
-categories = ["web programming"]
+categories = ["web-programming"]
 keywords = ["http", "header", "content-negotiation"]
 
 [dependencies]
