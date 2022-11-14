@@ -54,6 +54,15 @@ impl FromStr for Accept {
     }
 }
 
+impl From<Mime> for Accept {
+    fn from(mime: Mime) -> Self {
+        Self {
+            wildcard: None,
+            types: vec![MediaType::from(mime)],
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
