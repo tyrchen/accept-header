@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.2] - 2022-11-14
+
+[7fa4d3c](7fa4d3cc7eacd592057a1a4ff1ef13542f3c9cc7)...[1bdee46](1bdee46f40554c068e35b3f9677b7952979f5182)
+
+### Features
+
+- Support to_string for MediaType and Accept. ([1bdee46](1bdee46f40554c068e35b3f9677b7952979f5182) - 2022-11-14 by Tyr Chen)
+
 ## [0.1.1] - 2022-11-14
 
 [b578abd](b578abdee31d425667319b1af0358c16fa8fbde7)...[7fa4d3c](7fa4d3cc7eacd592057a1a4ff1ef13542f3c9cc7)
