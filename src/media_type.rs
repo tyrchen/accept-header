@@ -2,7 +2,7 @@ use mime::Mime;
 use snafu::{ensure, ResultExt};
 
 use crate::{error::*, MediaType};
-use std::{cmp::Ordering, str::FromStr};
+use std::{cmp::Ordering, fmt, str::FromStr};
 
 impl FromStr for MediaType {
     type Err = Error;
@@ -66,6 +66,18 @@ impl PartialOrd for MediaType {
     }
 }
 
+impl fmt::Display for MediaType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.mime)?;
+
+        if let Some(weight) = self.weight {
+            write!(f, ";q={}", weight)?;
+        }
+
+        Ok(())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -109,5 +121,15 @@ mod tests {
         assert!(t2 < t1);
         assert!(t2 != t3);
         assert!(t3 < t1);
+    }
+
+    #[test]
+    fn media_type_to_string_should_work() {
+        let t1: MediaType = "text/html; q= 0.5 ".parse().unwrap();
+        let t2: MediaType = "application/json".parse().unwrap();
+        let t3: MediaType = "text/html".parse().unwrap();
+        assert_eq!(t1.to_string(), "text/html;q=0.5");
+        assert_eq!(t2.to_string(), "application/json");
+        assert_eq!(t3.to_string(), "text/html");
     }
 }

@@ -1,7 +1,8 @@
 use crate::{error::*, Accept, MediaType};
 use http::StatusCode;
+use itertools::Itertools;
 use mime::Mime;
-use std::{cmp::Ordering, str::FromStr};
+use std::{cmp::Ordering, fmt, str::FromStr};
 
 impl Accept {
     /// Determine the most suitable `Content-Type` encoding.
@@ -63,6 +64,18 @@ impl From<Mime> for Accept {
     }
 }
 
+impl fmt::Display for Accept {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.types.iter().map(|m| m.to_string()).join(", "))?;
+
+        if let Some(wildcard) = &self.wildcard {
+            write!(f, ", {}", wildcard)?;
+        }
+
+        Ok(())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -118,5 +131,17 @@ mod tests {
         let available = vec![Mime::from_str("application/xml").unwrap()];
         let negotiated = accept.negotiate(&available);
         assert_eq!(negotiated, Err(StatusCode::NOT_ACCEPTABLE));
+    }
+
+    #[test]
+    fn accept_to_string_should_work() {
+        let accept = "application/json, text/html;q=0.9, text/plain;q=0.8, */*;q=0.7,*/*;q=0.6"
+            .parse::<Accept>()
+            .unwrap();
+
+        assert_eq!(
+            accept.to_string(),
+            "text/html;q=0.9, text/plain;q=0.8, application/json;q=0.6, */*;q=0.6"
+        );
     }
 }
