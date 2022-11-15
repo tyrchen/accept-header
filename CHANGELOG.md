@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0] - 2022-11-15
+
+[1bdee46](1bdee46f40554c068e35b3f9677b7952979f5182)...[8de6797](8de67979e43da0956ffc65271b26408ae3f8bd59)
+
+### Bug Fixes
+
+- Fix weight issue based on explaination from: [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Quality_values) ([8de6797](8de67979e43da0956ffc65271b26408ae3f8bd59) - 2022-11-15 by Tyr Chen)
+
 ## [0.1.2] - 2022-11-14
 
 [7fa4d3c](7fa4d3cc7eacd592057a1a4ff1ef13542f3c9cc7)...[1bdee46](1bdee46f40554c068e35b3f9677b7952979f5182)

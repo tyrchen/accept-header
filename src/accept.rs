@@ -40,15 +40,6 @@ impl FromStr for Accept {
             }
         }
 
-        // if there is a wildcard weight, apply it to all other types which doesn't has weight
-        if let Some(w) = wildcard.as_ref() {
-            for mtype in &mut types {
-                if mtype.weight.is_none() {
-                    mtype.weight = w.weight;
-                }
-            }
-        }
-
         types.sort_by(|a, b| b.partial_cmp(a).unwrap_or(Ordering::Equal));
 
         Ok(Accept { wildcard, types })
@@ -91,15 +82,15 @@ mod tests {
             Some(MediaType::from_str("*/*; q=0.6").unwrap())
         );
         assert_eq!(accept.types.len(), 3);
-        assert_eq!(accept.types[0].mime, Mime::from_str("text/html").unwrap());
-        assert_eq!(accept.types[0].weight, Some(0.9));
-        assert_eq!(accept.types[1].mime, Mime::from_str("text/plain").unwrap());
-        assert_eq!(accept.types[1].weight, Some(0.8));
         assert_eq!(
-            accept.types[2].mime,
+            accept.types[0].mime,
             Mime::from_str("application/json").unwrap()
         );
-        assert_eq!(accept.types[2].weight, Some(0.6));
+        assert_eq!(accept.types[0].weight, None);
+        assert_eq!(accept.types[1].mime, Mime::from_str("text/html").unwrap());
+        assert_eq!(accept.types[1].weight, Some(0.9));
+        assert_eq!(accept.types[2].mime, Mime::from_str("text/plain").unwrap());
+        assert_eq!(accept.types[2].weight, Some(0.8));
     }
 
     #[test]
@@ -115,7 +106,7 @@ mod tests {
 
         let negotiated = accept.negotiate(&available).unwrap();
 
-        assert_eq!(negotiated, Mime::from_str("text/html").unwrap());
+        assert_eq!(negotiated, Mime::from_str("application/json").unwrap());
 
         let available = vec![Mime::from_str("application/xml").unwrap()];
         let negotiated = accept.negotiate(&available).unwrap();
@@ -135,13 +126,13 @@ mod tests {
 
     #[test]
     fn accept_to_string_should_work() {
-        let accept = "application/json, text/html;q=0.9, text/plain;q=0.8, */*;q=0.7,*/*;q=0.6"
+        let accept = "application/json, text/plain;q=0.8, text/html;q=0.9, */*;q=0.7,*/*;q=0.6"
             .parse::<Accept>()
             .unwrap();
 
         assert_eq!(
             accept.to_string(),
-            "text/html;q=0.9, text/plain;q=0.8, application/json;q=0.6, */*;q=0.6"
+            "application/json, text/html;q=0.9, text/plain;q=0.8, */*;q=0.6"
         );
     }
 }

@@ -33,6 +33,6 @@ let available = vec![
 // content negotiation
 let negotiated = accept.negotiate(&available).unwrap();
 
-// "text/html" shall be chosen since it is available and has the highest weight
-assert_eq!(negotiated, Mime::from_str("text/html").unwrap());
+// "application/json" shall be chosen since it is available and has the highest weight
+assert_eq!(negotiated, Mime::from_str("application/json").unwrap());
 ```

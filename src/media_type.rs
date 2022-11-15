@@ -57,11 +57,21 @@ impl PartialEq<Mime> for &MediaType {
 
 impl PartialOrd for MediaType {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        match (self.weight, other.weight) {
-            (Some(left), Some(right)) => left.partial_cmp(&right),
-            (Some(_), None) => Some(Ordering::Greater),
-            (None, Some(_)) => Some(Ordering::Less),
-            (None, None) => Some(Ordering::Equal),
+        let aweight = self.weight.unwrap_or(1.0);
+        let bweight = other.weight.unwrap_or(1.0);
+        match aweight.partial_cmp(&bweight) {
+            Some(Ordering::Equal) => match (self.mime.type_(), other.mime.type_()) {
+                (mime::STAR, mime::STAR) => match (self.mime.subtype(), other.mime.subtype()) {
+                    (mime::STAR, mime::STAR) => Some(Ordering::Equal),
+                    (mime::STAR, _) => Some(Ordering::Less),
+                    (_, mime::STAR) => Some(Ordering::Greater),
+                    (_, _) => None,
+                },
+                (mime::STAR, _) => Some(Ordering::Less),
+                (_, mime::STAR) => Some(Ordering::Greater),
+                (_, _) => None,
+            },
+            v => v,
         }
     }
 }
@@ -116,11 +126,9 @@ mod tests {
         let t1: MediaType = "text/html; q= 0.5 ".parse().unwrap();
         let t2: MediaType = "application/json".parse().unwrap();
         let t3: MediaType = "text/html".parse().unwrap();
-        assert!(t1 > t2);
-        assert!(t1 > t3);
-        assert!(t2 < t1);
+        assert!(t1 < t2);
+        assert!(t1 < t3);
         assert!(t2 != t3);
-        assert!(t3 < t1);
     }
 
     #[test]
