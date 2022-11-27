@@ -2,11 +2,11 @@ use crate::{error::*, Accept, MediaType};
 use http::StatusCode;
 use itertools::Itertools;
 use mime::Mime;
-use std::{cmp::Ordering, fmt, str::FromStr};
+use std::{cmp::Ordering, collections::HashSet, fmt, str::FromStr};
 
 impl Accept {
     /// Determine the most suitable `Content-Type` encoding.
-    pub fn negotiate(&self, available: &[Mime]) -> Result<Mime, StatusCode> {
+    pub fn negotiate(&self, available: &HashSet<Mime>) -> Result<Mime, StatusCode> {
         for media_type in &self.types {
             if available.contains(&media_type.mime) {
                 return Ok(media_type.mime.clone());
@@ -14,6 +14,10 @@ impl Accept {
         }
 
         if self.wildcard.is_some() {
+            if available.contains(&mime::TEXT_HTML) {
+                return Ok(mime::TEXT_HTML);
+            }
+
             if let Some(accept) = available.iter().next() {
                 return Ok(accept.clone());
             }
@@ -102,13 +106,17 @@ mod tests {
         let available = vec![
             Mime::from_str("text/html").unwrap(),
             Mime::from_str("application/json").unwrap(),
-        ];
+        ]
+        .into_iter()
+        .collect();
 
         let negotiated = accept.negotiate(&available).unwrap();
 
         assert_eq!(negotiated, Mime::from_str("application/json").unwrap());
 
-        let available = vec![Mime::from_str("application/xml").unwrap()];
+        let available = vec![Mime::from_str("application/xml").unwrap()]
+            .into_iter()
+            .collect();
         let negotiated = accept.negotiate(&available).unwrap();
         assert_eq!(negotiated, Mime::from_str("application/xml").unwrap());
     }
@@ -119,7 +127,9 @@ mod tests {
             .parse::<Accept>()
             .unwrap();
 
-        let available = vec![Mime::from_str("application/xml").unwrap()];
+        let available = vec![Mime::from_str("application/xml").unwrap()]
+            .into_iter()
+            .collect();
         let negotiated = accept.negotiate(&available);
         assert_eq!(negotiated, Err(StatusCode::NOT_ACCEPTABLE));
     }
