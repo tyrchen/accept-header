@@ -2,13 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2022-11-27
+
+[3d200b6](3d200b681cac791c6380b3c56318bae11da29644)...[f782be8](f782be8c55ceb425c3a3e4686923fdf24ef35b6b)
+
+### Miscellaneous Tasks
+
+- Change interface from vec to hashset for better performance. Also select text/html by default ([f782be8](f782be8c55ceb425c3a3e4686923fdf24ef35b6b) - 2022-11-27 by Tyr Chen)
+
 ## [0.2.0] - 2022-11-15
 
-[1bdee46](1bdee46f40554c068e35b3f9677b7952979f5182)...[8de6797](8de67979e43da0956ffc65271b26408ae3f8bd59)
+[1bdee46](1bdee46f40554c068e35b3f9677b7952979f5182)...[3d200b6](3d200b681cac791c6380b3c56318bae11da29644)
 
 ### Bug Fixes
 
-- Fix weight issue based on explaination from: [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Quality_values) ([8de6797](8de67979e43da0956ffc65271b26408ae3f8bd59) - 2022-11-15 by Tyr Chen)
+- Fix weight issue based on explanation from: [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Quality_values) ([3d200b6](3d200b681cac791c6380b3c56318bae11da29644) - 2022-11-15 by Tyr Chen)
 
 ## [0.1.2] - 2022-11-14
 
