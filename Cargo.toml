@@ -1,6 +1,6 @@
 [package]
 name = "accept-header"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 license = "MIT"
 documentation = "https://docs.rs/accept-header"
@@ -17,4 +17,4 @@ keywords = ["http", "header", "content-negotiation"]
 http = "0.2.8"
 itertools = "0.10.5"
 mime = "0.3.16"
-snafu = { version = "0.7.3", features = ["rust_1_61"] }
+snafu = { version = "0.7.4", features = ["rust_1_61"] }
