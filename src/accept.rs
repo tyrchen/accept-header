@@ -2,11 +2,11 @@ use crate::{error::*, Accept, MediaType};
 use http::StatusCode;
 use itertools::Itertools;
 use mime::Mime;
-use std::{cmp::Ordering, collections::HashSet, fmt, str::FromStr};
+use std::{cmp::Ordering, fmt, str::FromStr};
 
 impl Accept {
     /// Determine the most suitable `Content-Type` encoding.
-    pub fn negotiate(&self, available: &HashSet<Mime>) -> Result<Mime, StatusCode> {
+    pub fn negotiate(&self, available: &[Mime]) -> Result<Mime, StatusCode> {
         for media_type in &self.types {
             if available.contains(&media_type.mime) {
                 return Ok(media_type.mime.clone());
@@ -64,7 +64,7 @@ impl fmt::Display for Accept {
         write!(f, "{}", self.types.iter().map(|m| m.to_string()).join(", "))?;
 
         if let Some(wildcard) = &self.wildcard {
-            write!(f, ", {}", wildcard)?;
+            write!(f, ", {wildcard}")?;
         }
 
         Ok(())
@@ -103,21 +103,17 @@ mod tests {
             .parse::<Accept>()
             .unwrap();
 
-        let available = vec![
+        let available = &[
             Mime::from_str("text/html").unwrap(),
             Mime::from_str("application/json").unwrap(),
-        ]
-        .into_iter()
-        .collect();
+        ];
 
-        let negotiated = accept.negotiate(&available).unwrap();
+        let negotiated = accept.negotiate(&available[..]).unwrap();
 
         assert_eq!(negotiated, Mime::from_str("application/json").unwrap());
 
-        let available = vec![Mime::from_str("application/xml").unwrap()]
-            .into_iter()
-            .collect();
-        let negotiated = accept.negotiate(&available).unwrap();
+        let available = &[Mime::from_str("application/xml").unwrap()];
+        let negotiated = accept.negotiate(&available[..]).unwrap();
         assert_eq!(negotiated, Mime::from_str("application/xml").unwrap());
     }
 
@@ -127,10 +123,8 @@ mod tests {
             .parse::<Accept>()
             .unwrap();
 
-        let available = vec![Mime::from_str("application/xml").unwrap()]
-            .into_iter()
-            .collect();
-        let negotiated = accept.negotiate(&available);
+        let available = &[Mime::from_str("application/xml").unwrap()];
+        let negotiated = accept.negotiate(&available[..]);
         assert_eq!(negotiated, Err(StatusCode::NOT_ACCEPTABLE));
     }
 

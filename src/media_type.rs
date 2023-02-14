@@ -81,7 +81,7 @@ impl fmt::Display for MediaType {
         write!(f, "{}", self.mime)?;
 
         if let Some(weight) = self.weight {
-            write!(f, ";q={}", weight)?;
+            write!(f, ";q={weight}")?;
         }
 
         Ok(())
