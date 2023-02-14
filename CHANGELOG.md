@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.3] - 2023-02-14
+
+[1c31269](1c312693bd373d75acec6bb9598de70d052f95a5)...[f993304](f9933043fabf8d9aa9e3f69b62f6437ece27ef21)
+
+### Features
+
+- Change negotiate interface to use &[Mime] ([f993304](f9933043fabf8d9aa9e3f69b62f6437ece27ef21) - 2023-02-14 by Tyr Chen)
+
 ## [0.2.1] - 2022-11-27
 
 [3d200b6](3d200b681cac791c6380b3c56318bae11da29644)...[f782be8](f782be8c55ceb425c3a3e4686923fdf24ef35b6b)
